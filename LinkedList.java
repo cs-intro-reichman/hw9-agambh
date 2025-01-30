@@ -90,9 +90,10 @@ public class LinkedList {
 		} else if(index == size){
 			addLast(block);
 		}else{ 
-			Node temp = new Node(block);
-			temp=getNode(index).next;
-			getNode(index).next = temp ; 
+			Node newNode = new Node(block);
+			Node prev=getNode(index-1);
+			newNode.next = prev.next ; 
+			prev.next=newNode;
 			size++;
 		}
 	}
@@ -158,12 +159,10 @@ public class LinkedList {
 	 * @return the index of the block, or -1 if the block is not in this list
 	 */
 	public int indexOf(MemoryBlock block) {
-		Node temp= first;
 		for(int i = 0 ; i< size ; i++){
-			if(temp.block.equals(block)){
+			if(getBlock(i).equals(block)){
 				return i ;
 			}
-			temp=temp.next;
 		}
 		return -1;
 	}
@@ -176,12 +175,15 @@ public class LinkedList {
 	 */
 	public void remove(Node node) {
 		
-		if(node.equals(first)){
+		if(node==first){
 			first=first.next;
+			if(first == null){
+				last=null;
+			}
 		} else{
 			Node temp= first;
 			for(int i =0 ; i < size ; i++){
-				if(node.equals(temp.next)){
+				if(node == temp.next){
 					temp.next=node.next;
 					break;
 				}
@@ -189,11 +191,6 @@ public class LinkedList {
 			}
 			size--;
 		}
-		
-		/*Node before = getNode(indexOf(node.block)-1);
-		before.next=node.next;
-		size--;
-		*/
 	}
 
 	/**
