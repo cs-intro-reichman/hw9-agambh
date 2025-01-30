@@ -118,9 +118,14 @@ public class LinkedList {
 	 *        the given memory block
 	 */
 	public void addFirst(MemoryBlock block) {
-		Node temp = new Node(block);
+		if(first== null){
+			first = new Node(block);
+			last = first;
+		} else{
+			Node temp = new Node(block);
 		temp.next = first;
 		first = temp;
+		}
 		size++;
 	}
 
