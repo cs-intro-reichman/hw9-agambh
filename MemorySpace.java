@@ -59,6 +59,7 @@ public class MemorySpace {
 	 */
 	public int malloc(int length) {	
 		Node current = freeList.getFirst();
+		this.defrag();
 		while (current != null && current.block.length < length) {
 			current = current.next;
 		}
@@ -73,6 +74,7 @@ public class MemorySpace {
 			}
 			return baseaddress;
 		}
+
         return -1;	
 		/*if (match != null) {
 			MemoryBlock newBlock = new MemoryBlock(match.block.baseAddress, length);
@@ -118,7 +120,7 @@ public class MemorySpace {
 	 *            the starting address of the block to freeList
 	 */
 	public void free(int address) {
-		if (freeList.getSize() <= 1 ) {         //&& freeList.getFirst().block.baseAddress == 0 && freeList.getFirst().block.length == 100
+		if (freeList.getSize() <= 1  && freeList.getFirst().block.baseAddress == 0 && freeList.getFirst().block.length == 100) {        
 			throw new IllegalArgumentException(
 			"index must be between 0 and size");
 		}
