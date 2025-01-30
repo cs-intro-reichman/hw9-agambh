@@ -215,13 +215,12 @@ public class LinkedList {
 	 *         if the given memory block is not in this list
 	 */
 	public void remove(MemoryBlock block) {
-		remove(indexOf(block));
-		/* 
 		if(indexOf(block) == -1){
 			throw new IllegalArgumentException(
 					"index must be between 0 and size");
 		}
-		if(indexOf(block)==0){
+		remove(indexOf(block));
+		/* if(indexOf(block)==0){
 			first=first.next;
 			if(first==null) last=null;
 		}else if( indexOf(block) == size-1 ) last = getNode(indexOf(block)-1);
