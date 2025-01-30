@@ -105,9 +105,13 @@ public class LinkedList {
 	 *        the given memory block
 	 */
 	public void addLast(MemoryBlock block) {
-		last.next = new Node(block);
-		size++;
-		last=last.next;
+		if(last==null){
+			addFirst(block);
+		} else{
+			last.next = new Node(block);
+			last=last.next;
+			size++;
+		}
 	}
 	
 	/**
@@ -123,8 +127,8 @@ public class LinkedList {
 			last = first;
 		} else{
 			Node temp = new Node(block);
-		temp.next = first;
-		first = temp;
+			temp.next = first;
+			first = temp;
 		}
 		size++;
 	}
@@ -159,6 +163,7 @@ public class LinkedList {
 			if(temp.block.equals(block)){
 				return i ;
 			}
+			temp=temp.next;
 		}
 		return -1;
 	}
@@ -176,11 +181,13 @@ public class LinkedList {
 		} else{
 			Node temp= first;
 			for(int i =0 ; i < size ; i++){
-			if(node.equals(temp.next)){
-				temp.next=node.next;
+				if(node.equals(temp.next)){
+					temp.next=node.next;
+					break;
+				}
+				temp=temp.next;
 			}
-		}
-		size--;
+			size--;
 		}
 		
 		/*Node before = getNode(indexOf(node.block)-1);
