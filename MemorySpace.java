@@ -88,17 +88,25 @@ public class MemorySpace {
 	 *            the starting address of the block to freeList
 	 */
 	public void free(int address) {
-		if (freeList.getSize() <= 1  && freeList.getFirst().block.baseAddress == 0 && freeList.getFirst().block.length == 100) {        
+		if (allocatedList.getSize() == 0) {
 			throw new IllegalArgumentException(
-			"index must be between 0 and size");
+					"index must be between 0 and size");
 		}
-		Node current = allocatedList.getFirst();
-		while (current != null && current.block.baseAddress != address) {
-			current = current.next;
+
+		Node check = allocatedList.getFirst();
+		Node newNode = null;
+		while (check != null){
+			if (check.block.baseAddress == address){
+				newNode = check;
+				check = null;
+			}
+			else{
+				check = check.next;
+			}
 		}
-		if (current.block.baseAddress == address) {
-			freeList.addLast(current.block);
-			allocatedList.remove(current);
+		if (newNode != null){
+			allocatedList.remove(newNode);
+			freeList.addLast(newNode.block);
 		}
 	}
 	
@@ -116,21 +124,29 @@ public class MemorySpace {
 	 * In this implementation Malloc does not call defrag.
 	 */
 	public void defrag() {
-		if (freeList.getSize() <= 1) {
-			return;
-		}
-		freeList.sort();
 		Node current = freeList.getFirst();
-		while (current != null && current.next != null) {
-			MemoryBlock currentBlock = current.block;
-			MemoryBlock nextBlock = current.next.block;
+			Node node1 = null;
+			Node node2 = null;
 	
-			if (currentBlock.baseAddress + currentBlock.length == nextBlock.baseAddress) {
-				currentBlock.length += nextBlock.length;
-				freeList.remove(current.next);
-			} else {
-				current = current.next;
-			}
-		}
+			while (current != null){
+				Node runing = current.next;
+				while (runing != null){
+					if (current.block.baseAddress + current.block.length == runing.block.baseAddress){
+						
+						freeList.remove(runing);
+						current.block.length = current.block.length + runing.block.length;
+						runing = current;
+					}
+					else {
+						runing = runing.next;
+					}
+				}
+				if (node1 == null && node2 == null){
+					current = current.next;
+				}
+	
+			}	
+	
+	
 	}
 }
